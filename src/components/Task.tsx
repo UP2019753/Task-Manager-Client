@@ -1,5 +1,5 @@
 import { useDraggable } from "@dnd-kit/core";
-import { Button, Card, Typography } from "@mui/material";
+import { Button, Card, IconButton, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { useMutation } from "@tanstack/react-query";
 import { FC } from "react";
@@ -10,6 +10,7 @@ import { useGraphQL } from "../hooks/useGraphQL";
 import { graphQLClient } from "../utils/request";
 import { RealTimeDuration } from "./RealTimeDuration";
 import { CSS } from "@dnd-kit/utilities";
+import { AddBox, Delete } from "@mui/icons-material";
 
 export interface TaskProps {
   task: FragmentType<typeof TaskFragment>;
@@ -31,6 +32,12 @@ const stopTaskMutation = graphql(`
   }
 `);
 
+const deleteTaskMutation = graphql(`
+  mutation deleteTaskMutation($taskId: Int!) {
+    deleteTask(taskID: $taskId)
+  }
+`);
+
 export const Task: FC<TaskProps> = (props) => {
   const task = useFragment(TaskFragment, props.task);
   const { mutate: startMutate } = useMutation({
@@ -43,6 +50,14 @@ export const Task: FC<TaskProps> = (props) => {
   const { mutate: stopMutate } = useMutation({
     mutationFn: async () =>
       graphQLClient.request(stopTaskMutation, { taskId: task.id }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["boards"] });
+    },
+  });
+
+  const { mutate: deleteMutate } = useMutation({
+    mutationFn: async () =>
+      graphQLClient.request(deleteTaskMutation, { taskId: task.id }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["boards"] });
     },
@@ -64,9 +79,23 @@ export const Task: FC<TaskProps> = (props) => {
     >
       <Grid2 container direction="column">
         <Grid2 container>
-          <Grid2 xs>
-            <Typography variant="body1">{task.name}</Typography>
+          <Grid2 container xs>
+            <Grid2>
+              <Typography variant="body1">{task.name}</Typography>
+            </Grid2>
+            <Grid2>
+              <IconButton
+                aria-label="delete"
+                onClick={() => {
+                  deleteMutate();
+                }}
+                size="small"
+              >
+                <Delete></Delete>
+              </IconButton>
+            </Grid2>
           </Grid2>
+
           <Grid2 xs="auto">
             <Typography variant="body1">
               <RealTimeDuration time={task.totalTime} />
