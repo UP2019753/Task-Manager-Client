@@ -16,6 +16,7 @@ const documents = {
     "\n  mutation startTaskMutation($taskId: Int!) {\n    startTimePeriod(taskID: $taskId) {\n      id\n    }\n  }\n": types.StartTaskMutationDocument,
     "\n  mutation stopTaskMutation($taskId: Int!) {\n    stopTimePeriod(taskID: $taskId) {\n      id\n    }\n  }\n": types.StopTaskMutationDocument,
     "\n  mutation deleteTaskMutation($taskId: Int!) {\n    deleteTask(taskID: $taskId)\n  }\n": types.DeleteTaskMutationDocument,
+    "\n  mutation setTaskNameMutation($taskId: Int!, $name: String!) {\n    setTaskName(taskId: $taskId, name: $name) {\n      id\n    }\n  }\n": types.SetTaskNameMutationDocument,
     "\n  mutation createTask($id: Int!) {\n    createTask(boardId: $id, name: \"New Task\") {\n      id\n    }\n  }\n": types.CreateTaskDocument,
     "\n  fragment RealTimeDurationItem on RealTimeDuration {\n    totalSavedTime\n    startTimes\n  }\n": types.RealTimeDurationItemFragmentDoc,
     "\n  fragment TaskItem on Task {\n    id\n    name\n    isRunning\n    status\n    totalTime {\n      ...RealTimeDurationItem\n    }\n  }\n": types.TaskItemFragmentDoc,
@@ -49,6 +50,10 @@ export function graphql(source: "\n  mutation stopTaskMutation($taskId: Int!) {\
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation deleteTaskMutation($taskId: Int!) {\n    deleteTask(taskID: $taskId)\n  }\n"): (typeof documents)["\n  mutation deleteTaskMutation($taskId: Int!) {\n    deleteTask(taskID: $taskId)\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation setTaskNameMutation($taskId: Int!, $name: String!) {\n    setTaskName(taskId: $taskId, name: $name) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation setTaskNameMutation($taskId: Int!, $name: String!) {\n    setTaskName(taskId: $taskId, name: $name) {\n      id\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
