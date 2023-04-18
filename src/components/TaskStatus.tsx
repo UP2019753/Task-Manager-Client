@@ -18,8 +18,8 @@ const taskProgressToTitle = {
 };
 
 const createTaskMutation = graphql(`
-  mutation createTask($id: Int!) {
-    createTask(boardId: $id, name: "New Task") {
+  mutation createTask($id: Int!, $status: TaskProgress) {
+    createTask(boardId: $id, name: "New Task", taskProgress: $status) {
       id
     }
   }
@@ -33,8 +33,8 @@ export interface TaskStatusProps {
 
 export const TaskStatus: FC<TaskStatusProps> = ({ boardId, status, tasks }) => {
   const { mutate: createMutate } = useMutation({
-    mutationFn: async () =>
-      graphQLClient.request(createTaskMutation, { id: boardId }),
+    mutationFn: async (status?: TaskProgress) =>
+      graphQLClient.request(createTaskMutation, { id: boardId, status }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["boards"] });
     },
@@ -64,7 +64,7 @@ export const TaskStatus: FC<TaskStatusProps> = ({ boardId, status, tasks }) => {
         <IconButton
           aria-label="add"
           onClick={() => {
-            createMutate();
+            createMutate(status);
           }}
         >
           <AddBox />

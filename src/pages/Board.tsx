@@ -16,6 +16,7 @@ import {
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { FC, useCallback } from "react";
+import { useParams } from "react-router-dom";
 import { queryClient } from "../App";
 import { Task } from "../components/Task";
 import { TaskStatus } from "../components/TaskStatus";
@@ -34,19 +35,11 @@ const boardByIdQueryDocument = graphql(`
   }
 `);
 
-interface TaskColumn {
-  status: TaskProgress;
-  title: string;
-}
 const columns: TaskProgress[] = [
   TaskProgress.Notstarted,
   TaskProgress.Inprogress,
   TaskProgress.Done,
 ];
-
-export interface BoardPageProps {
-  boardId: number;
-}
 
 const setTaskStatusMutation = graphql(`
   mutation setTaskStatusMutation($taskId: Int!, $status: TaskProgress!) {
@@ -56,12 +49,20 @@ const setTaskStatusMutation = graphql(`
   }
 `);
 
-export const BoardPage: FC<BoardPageProps> = ({ boardId }) => {
+export const BoardPage: FC = () => {
+  const { boardId } = useParams();
+
+  const boardIdParsed = boardId && +boardId;
+
+  if (!boardIdParsed) {
+    throw new Error("boardId missing");
+  }
+
   const { data } = useQuery({
     queryKey: ["boards"],
     queryFn: async () =>
       graphQLClient.request(boardByIdQueryDocument, {
-        id: boardId,
+        id: boardIdParsed,
       }),
   });
 
@@ -105,7 +106,7 @@ export const BoardPage: FC<BoardPageProps> = ({ boardId }) => {
           });
           return (
             <TaskStatus
-              boardId={boardId}
+              boardId={boardIdParsed}
               status={status}
               tasks={tasks}
               key={status}
