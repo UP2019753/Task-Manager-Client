@@ -22,6 +22,7 @@ const documents = {
     "\n  fragment TaskItem on Task {\n    id\n    name\n    isRunning\n    status\n    totalTime {\n      ...RealTimeDurationItem\n    }\n  }\n": types.TaskItemFragmentDoc,
     "\n  query getBoardById($id: Int!) {\n    getBoardById(id: $id) {\n      tasks {\n        ...TaskItem\n      }\n    }\n  }\n": types.GetBoardByIdDocument,
     "\n  mutation setTaskStatusMutation($taskId: Int!, $status: TaskProgress!) {\n    setTaskStatus(taskID: $taskId, status: $status) {\n      id\n    }\n  }\n": types.SetTaskStatusMutationDocument,
+    "\n  mutation createBoard($name: String!) {\n    createBoard(name: $name) {\n      id\n    }\n  }\n": types.CreateBoardDocument,
 };
 
 /**
@@ -74,6 +75,10 @@ export function graphql(source: "\n  query getBoardById($id: Int!) {\n    getBoa
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation setTaskStatusMutation($taskId: Int!, $status: TaskProgress!) {\n    setTaskStatus(taskID: $taskId, status: $status) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation setTaskStatusMutation($taskId: Int!, $status: TaskProgress!) {\n    setTaskStatus(taskID: $taskId, status: $status) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation createBoard($name: String!) {\n    createBoard(name: $name) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation createBoard($name: String!) {\n    createBoard(name: $name) {\n      id\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
