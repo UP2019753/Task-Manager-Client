@@ -8,8 +8,8 @@ import {
 import { Button, CircularProgress } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { FC, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { FC, useCallback, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import { queryClient } from "../App";
 import { TaskStatus } from "../components/TaskStatus";
 import { TaskFragment } from "../fragments/taskFragment";
@@ -19,6 +19,7 @@ import { graphQLClient } from "../utils/request";
 import csvDownload from "json-to-csv-export";
 import { RealTimeDurationFragment } from "../fragments/realTimeDurationFragment";
 import { Duration } from "luxon";
+import { useSavedBoards } from "../hooks/useSavedBoards";
 
 const boardByIdQueryDocument = graphql(`
   query getBoardById($id: Int!) {
@@ -53,12 +54,20 @@ export const BoardPage: FC = () => {
     throw new Error("boardId missing");
   }
 
+  const { addBoardId } = useSavedBoards();
+
+  useEffect(() => {
+    // for when board opened via link
+    addBoardId(boardIdParsed);
+  }, []);
+
   const { data } = useQuery({
-    queryKey: ["boards"],
+    queryKey: ["boards", boardId],
     queryFn: async () =>
       graphQLClient.request(boardByIdQueryDocument, {
         id: boardIdParsed,
       }),
+    refetchInterval: 1000,
   });
 
   const exportAsCsv = useCallback(() => {
@@ -117,8 +126,15 @@ export const BoardPage: FC = () => {
   return (
     <DndContext onDragEnd={onDrop} sensors={sensors}>
       <Grid2 container direction="column">
-        <Grid2>
-          <Button onClick={exportAsCsv}>Export CSV</Button>
+        <Grid2 container direction="row">
+          <Grid2 xs="auto">
+            <Button variant="text" component={Link} to={`/`}>
+              Home
+            </Button>
+          </Grid2>
+          <Grid2>
+            <Button onClick={exportAsCsv}>Export CSV</Button>
+          </Grid2>
         </Grid2>
         <Grid2 container spacing={2}>
           {columns.map((status) => {
