@@ -13,7 +13,6 @@ import { ChangeEvent, FC, useCallback, useState } from "react";
 import { queryClient } from "../App";
 import { TaskFragment } from "../fragments/taskFragment";
 import { FragmentType, graphql, useFragment } from "../gql";
-import { useGraphQL } from "../hooks/useGraphQL";
 import { graphQLClient } from "../utils/request";
 import { RealTimeDuration } from "./RealTimeDuration";
 import { CSS } from "@dnd-kit/utilities";
