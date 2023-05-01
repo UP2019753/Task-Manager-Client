@@ -47,28 +47,37 @@ export const TaskStatus: FC<TaskStatusProps> = ({ boardId, status, tasks }) => {
     },
   });
   return (
-    <Grid2 container direction="column" xs={4} ref={setNodeRef}>
-      <Grid2>
-        <Typography variant="h4">{taskProgressToTitle[status]}</Typography>
-      </Grid2>
-      {tasks?.map((task) => {
-        const fragmentData = useFragment(TaskFragment, task);
-        return (
-          <Grid2 key={fragmentData.id}>
-            <Task task={task} />
-          </Grid2>
-        );
-      })}
+    <Grid2 container xs={4}>
+      <Grid2
+        xs={12}
+        container
+        direction="column"
+        ref={setNodeRef}
+        spacing={2}
+        sx={{ bgcolor: "#F4F5F7", borderRadius: "6px", mx: 2 }}
+      >
+        <Grid2>
+          <Typography variant="h4">{taskProgressToTitle[status]}</Typography>
+        </Grid2>
+        {tasks?.map((task) => {
+          const fragmentData = useFragment(TaskFragment, task);
+          return (
+            <Grid2 key={fragmentData.id}>
+              <Task task={task} />
+            </Grid2>
+          );
+        })}
 
-      <Grid2 display="flex" justifyContent="center">
-        <IconButton
-          aria-label="add"
-          onClick={() => {
-            createMutate(status);
-          }}
-        >
-          <AddBox />
-        </IconButton>
+        <Grid2 display="flex" justifyContent="center">
+          <IconButton
+            aria-label="add"
+            onClick={() => {
+              createMutate(status);
+            }}
+          >
+            <AddBox />
+          </IconButton>
+        </Grid2>
       </Grid2>
     </Grid2>
   );

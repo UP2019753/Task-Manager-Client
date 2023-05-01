@@ -101,7 +101,6 @@ export const BoardPage: FC = () => {
     },
   });
   const onDrop = useCallback(({ active, over }: DragEndEvent) => {
-    console.log(active, over);
     if (
       active.data.current?.type === "task" &&
       over?.data.current?.type === "taskColumn"
@@ -126,7 +125,12 @@ export const BoardPage: FC = () => {
   return (
     <DndContext onDragEnd={onDrop} sensors={sensors}>
       <Grid2 container direction="column">
-        <Grid2 container direction="row">
+        <Grid2
+          container
+          direction="row"
+          sx={{ bgcolor: "#c0c0c0", m: 2 }}
+          spacing={3}
+        >
           <Grid2 xs="auto">
             <Button variant="text" component={Link} to={`/`}>
               Home
@@ -136,7 +140,7 @@ export const BoardPage: FC = () => {
             <Button onClick={exportAsCsv}>Export CSV</Button>
           </Grid2>
         </Grid2>
-        <Grid2 container spacing={2}>
+        <Grid2 container spacing={3} sx={{ m: 0, mt: 3 }}>
           {columns.map((status) => {
             const tasks = data.getBoardById.tasks.filter((task) => {
               const fragmentData = useFragment(TaskFragment, task);

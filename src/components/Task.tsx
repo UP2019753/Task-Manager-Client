@@ -142,17 +142,6 @@ export const Task: FC<TaskProps> = (props) => {
                 </Grid2>
                 <Grid2>
                   <IconButton
-                    aria-label="delete"
-                    onClick={() => {
-                      deleteMutate();
-                    }}
-                    sx={{ padding: 0 }}
-                  >
-                    <Delete />
-                  </IconButton>
-                </Grid2>
-                <Grid2>
-                  <IconButton
                     aria-label="edit"
                     onClick={() => {
                       setIsEditMode(true);
@@ -160,6 +149,17 @@ export const Task: FC<TaskProps> = (props) => {
                     sx={{ padding: 0 }}
                   >
                     <Edit />
+                  </IconButton>
+                </Grid2>
+                <Grid2>
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => {
+                      deleteMutate();
+                    }}
+                    sx={{ padding: 0 }}
+                  >
+                    <Delete />
                   </IconButton>
                 </Grid2>
               </>

@@ -81,17 +81,6 @@ export const BoardSummary: FC<BoardProps> = (props) => {
                 </Grid2>
                 <Grid2>
                   <IconButton
-                    aria-label="delete"
-                    onClick={() => {
-                      removeBoardId(board.id);
-                    }}
-                    sx={{ padding: 0 }}
-                  >
-                    <Delete />
-                  </IconButton>
-                </Grid2>
-                <Grid2>
-                  <IconButton
                     aria-label="edit"
                     onClick={() => {
                       setIsEditMode(true);
@@ -101,15 +90,20 @@ export const BoardSummary: FC<BoardProps> = (props) => {
                     <Edit />
                   </IconButton>
                 </Grid2>
+                <Grid2>
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => {
+                      removeBoardId(board.id);
+                    }}
+                    sx={{ padding: 0 }}
+                  >
+                    <Delete />
+                  </IconButton>
+                </Grid2>
               </>
             )}
           </Grid2>
-
-          {/* <Grid2 xs="auto">
-            <Typography variant="body1">
-              <RealTimeDuration time={task.totalTime} />
-            </Typography>
-          </Grid2> */}
         </Grid2>
         <Grid2 container>
           <Grid2 xs></Grid2>

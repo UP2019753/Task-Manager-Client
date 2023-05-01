@@ -4,7 +4,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { graphQLClient } from "../utils/request";
 import { queryClient } from "../App";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import { IconButton } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import { AddBox } from "@mui/icons-material";
 import { useSavedBoards } from "../hooks/useSavedBoards";
 import { BoardSummary } from "../components/BoardSummary";
@@ -45,8 +45,17 @@ export const HomePage: FC = () => {
   return (
     <Grid2 container>
       <Grid2 xs />
-      <Grid2 container direction="column" xs={4}>
-        <Grid2>Main Menu</Grid2>
+      <Grid2
+        container
+        direction="column"
+        xs={5}
+        sx={{ bgcolor: "#c0c0c0", m: 2, borderRadius: 2 }}
+      >
+        <Grid2>
+          <Typography variant="h4" align="center">
+            Main Menu
+          </Typography>
+        </Grid2>
         {data?.getBoardsByIds.map((fragment) => {
           const board = useFragment(BoardSummaryFragment, fragment);
           return (
